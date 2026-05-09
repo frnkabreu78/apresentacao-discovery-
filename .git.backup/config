@@ -1,0 +1,16 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+	precomposeunicode = true
+[remote "origin"]
+	url = https://github.com/frnkabreu78/apresentacao-discovery-.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[user]
+	email = frank.abreu@gmail.com
+	name = Frank Abreu
+[branch "main"]
+	remote = origin
+	merge = refs/heads/main

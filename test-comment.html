@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Comentário</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        input, textarea { width: 100%; padding: 10px; margin: 10px 0; font-size: 14px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 5px; }
+        button:hover { background: #0056b3; }
+        .result { margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 5px; white-space: pre-wrap; font-family: monospace; font-size: 12px; }
+        .error { background: #ffcccc; color: #cc0000; }
+        .success { background: #ccffcc; color: #00cc00; }
+        h1 { color: #333; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste de Comentário</h1>
+
+    <div>
+        <label>Slide ID:</label>
+        <input type="text" id="slideId" value="1" placeholder="ID do slide">
+    </div>
+
+    <div>
+        <label>Autor:</label>
+        <input type="text" id="author" value="Tester" placeholder="Seu nome">
+    </div>
+
+    <div>
+        <label>Comentário:</label>
+        <textarea id="text" placeholder="Escreva seu comentário..." rows="4">Teste de comentário</textarea>
+    </div>
+
+    <button onclick="postComment()">📤 Enviar Comentário (POST)</button>
+    <button onclick="getComments()">📥 Listar Comentários (GET)</button>
+    <button onclick="clearLog()">🗑️ Limpar Log</button>
+
+    <div id="result" class="result"></div>
+
+    <script>
+        const BASE_URL = window.location.origin;
+        const resultDiv = document.getElementById('result');
+
+        function log(message, isError = false) {
+            const timestamp = new Date().toLocaleTimeString();
+            const line = `[${timestamp}] ${message}`;
+            resultDiv.textContent += line + '\n';
+            if (isError) resultDiv.classList.add('error');
+            else resultDiv.classList.add('success');
+            resultDiv.scrollTop = resultDiv.scrollHeight;
+        }
+
+        function clearLog() {
+            resultDiv.textContent = '';
+            resultDiv.className = 'result';
+        }
+
+        async function postComment() {
+            clearLog();
+            const slideId = document.getElementById('slideId').value;
+            const author = document.getElementById('author').value;
+            const text = document.getElementById('text').value;
+
+            log(`Enviando comentário...`);
+            log(`URL: ${BASE_URL}/api/comments`);
+            log(`Dados: { slide: "${slideId}", author: "${author}", text: "${text}" }`);
+
+            try {
+                const response = await fetch(`${BASE_URL}/api/comments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        slide: slideId,
+                        author: author,
+                        text: text
+                    })
+                });
+
+                log(`Status: ${response.status}`);
+
+                const data = await response.json();
+                log(`Resposta: ${JSON.stringify(data, null, 2)}`);
+
+                if (data.ok) {
+                    log(`✅ Comentário enviado com sucesso!`);
+                    log(`ID: ${data.comment.id}`);
+                } else {
+                    log(`❌ Erro: ${data.error || 'Desconhecido'}`, true);
+                }
+            } catch (error) {
+                log(`❌ Erro de rede: ${error.message}`, true);
+            }
+        }
+
+        async function getComments() {
+            clearLog();
+            const slideId = document.getElementById('slideId').value;
+
+            log(`Buscando comentários do slide ${slideId}...`);
+            log(`URL: ${BASE_URL}/api/comments?slide=${slideId}`);
+
+            try {
+                const response = await fetch(`${BASE_URL}/api/comments?slide=${slideId}`);
+
+                log(`Status: ${response.status}`);
+
+                const data = await response.json();
+                log(`Resposta: ${JSON.stringify(data, null, 2)}`);
+
+                if (Array.isArray(data)) {
+                    log(`✅ ${data.length} comentário(s) encontrado(s)`);
+                } else {
+                    log(`❌ Resposta inesperada`, true);
+                }
+            } catch (error) {
+                log(`❌ Erro de rede: ${error.message}`, true);
+            }
+        }
+
+        // Auto-log on load
+        window.addEventListener('load', () => {
+            log(`Página carregada`);
+            log(`Base URL: ${BASE_URL}`);
+            log(`Ready para testar!`);
+        });
+    </script>
+</body>
+</html>

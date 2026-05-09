@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-presentation-identity="brand-guidelines" data-brand-slide="cover">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pesquisa — perfis de lojistas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="/assets/index-6TjdRiB4.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Cac48xBI.css">
+  </head>
+  <body>
+    <div id="root">
+      <div class="pres-boot">
+        <p>Carregando apresentação…</p>
+        <p class="pres-boot-hint">
+          Se esta mensagem não sumir em poucos segundos, abra o Console (F12 → Console) e verifique erros de rede ou de
+          script. Use <code>npm run dev</code> na pasta do projeto e abra o URL que o terminal mostrar (ex.:
+          http://localhost:5174).
+        </p>
+      </div>
+    </div>
+    <script>
+      (function () {
+        function appMounted() {
+          var root = document.getElementById("root");
+          return root && root.querySelector(".pres-root");
+        }
+
+        function isExternalResourceTarget(t) {
+          if (!t || t === window || t === document || t === document.documentElement) return false;
+          var tag = t.tagName;
+          if (tag !== "LINK" && tag !== "SCRIPT" && tag !== "IMG") return false;
+          var urlStr = t.src || t.href;
+          if (!urlStr) return false;
+          try {
+            var u = new URL(urlStr, window.location.href);
+            return u.origin !== window.location.origin;
+          } catch (e) {
+            return true;
+          }
+        }
+
+        function formatBootError(ev) {
+          if (ev.message) return String(ev.message);
+          if (ev.error) {
+            if (ev.error instanceof Error) return ev.error.message || String(ev.error);
+            return String(ev.error);
+          }
+          var parts = [];
+          if (ev.filename) parts.push(ev.filename + ":" + ev.lineno + ":" + ev.colno);
+          var t = ev.target;
+          if (t && t !== window) {
+            if (t.src) parts.push("Recurso: " + t.src);
+            else if (t.href) parts.push("Recurso: " + t.href);
+          }
+          return parts.length ? parts.join(" · ") : "Erro sem mensagem (abrir F12 → Consola para detalhes).";
+        }
+
+        function showFatalInRoot(msg) {
+          var root = document.getElementById("root");
+          if (!root || root.querySelector(".pres-fatal")) return;
+          root.innerHTML =
+            '<div class="pres-boot pres-fatal" style="background:#fedede;padding:1.5rem;border-radius:8px;max-width:40rem;margin:2rem auto">' +
+            "<strong>Erro ao carregar a página</strong>" +
+            '<p style="word-break:break-word;margin-top:0.5rem">' +
+            msg.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") +
+            "</p></div>";
+        }
+
+        window.addEventListener(
+          "error",
+          function (ev) {
+            if (appMounted()) {
+              return;
+            }
+            if (isExternalResourceTarget(ev.target)) {
+              return;
+            }
+            var root = document.getElementById("root");
+            if (!root || root.querySelector(".pres-fatal")) return;
+            var msg = formatBootError(ev);
+            if (!ev.message && !ev.error && !ev.filename && ev.target === window) {
+              return;
+            }
+            showFatalInRoot(msg);
+          },
+          true,
+        );
+
+        window.addEventListener("unhandledrejection", function (ev) {
+          if (appMounted()) {
+            console.error("Promise rejeitada (após montagem):", ev.reason);
+            return;
+          }
+          var root = document.getElementById("root");
+          if (!root || root.querySelector(".pres-fatal")) return;
+          var msg =
+            ev.reason instanceof Error ? ev.reason.message || String(ev.reason) : String(ev.reason || "desconhecido");
+          showFatalInRoot(msg);
+        });
+      })();
+    </script>
+  </body>
+</html>

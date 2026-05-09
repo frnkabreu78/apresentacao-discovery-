@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Completo de API de Comentários</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        input, textarea { width: 100%; padding: 10px; margin: 5px 0; font-size: 14px; box-sizing: border-box; }
+        button { padding: 10px 20px; margin: 5px 5px 5px 0; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 5px; }
+        button:hover { background: #0056b3; }
+        .btn-delete { background: #dc3545; }
+        .btn-delete:hover { background: #c82333; }
+        .btn-edit { background: #28a745; }
+        .btn-edit:hover { background: #218838; }
+        .result { margin-top: 15px; padding: 15px; background: #f0f0f0; border-radius: 5px; white-space: pre-wrap; font-family: monospace; font-size: 12px; max-height: 300px; overflow-y: auto; }
+        .error { background: #ffcccc; color: #cc0000; }
+        .success { background: #ccffcc; color: #00cc00; }
+        h1, h2 { color: #333; }
+        .comment-item { background: white; padding: 10px; margin: 10px 0; border-left: 4px solid #007bff; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste Completo de API de Comentários</h1>
+
+    <div class="section">
+        <h2>1️⃣ Criar Comentário (POST)</h2>
+        <input type="text" id="slideId" value="1" placeholder="ID do slide">
+        <input type="text" id="author" value="Tester" placeholder="Seu nome">
+        <textarea id="text" placeholder="Escreva seu comentário..." rows="3">Teste de comentário</textarea>
+        <button onclick="postComment()">📤 Enviar Comentário (POST)</button>
+        <div id="postResult" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h2>2️⃣ Listar Comentários (GET)</h2>
+        <input type="text" id="slideIdGet" value="1" placeholder="ID do slide para buscar">
+        <button onclick="getComments()">📥 Listar Comentários (GET)</button>
+        <div id="getResult" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h2>3️⃣ Editar Comentário (PUT)</h2>
+        <input type="text" id="commentIdEdit" placeholder="ID do comentário a editar">
+        <textarea id="textEdit" placeholder="Novo texto do comentário..." rows="3">Texto editado</textarea>
+        <button class="btn-edit" onclick="putComment()">✏️ Editar Comentário (PUT)</button>
+        <div id="putResult" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h2>4️⃣ Apagar Comentário (DELETE)</h2>
+        <input type="text" id="commentIdDelete" placeholder="ID do comentário a apagar">
+        <button class="btn-delete" onclick="deleteComment()">🗑️ Apagar Comentário (DELETE)</button>
+        <div id="deleteResult" class="result"></div>
+    </div>
+
+    <script>
+        const BASE_URL = window.location.origin;
+
+        function clearResult(elementId) {
+            const elem = document.getElementById(elementId);
+            elem.textContent = '';
+            elem.className = 'result';
+        }
+
+        function log(elementId, message, isError = false) {
+            const elem = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            const line = `[${timestamp}] ${message}`;
+            elem.textContent += line + '\n';
+            elem.className = isError ? 'result error' : 'result success';
+            elem.scrollTop = elem.scrollHeight;
+        }
+
+        async function postComment() {
+            clearResult('postResult');
+            const slideId = document.getElementById('slideId').value;
+            const author = document.getElementById('author').value;
+            const text = document.getElementById('text').value;
+
+            log('postResult', `📤 POST /api/comments`);
+            log('postResult', `Dados: slide=${slideId}, author=${author}, text=${text.substring(0, 30)}...`);
+
+            try {
+                const response = await fetch(`${BASE_URL}/api/comments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ slide: slideId, author, text })
+                });
+
+                log('postResult', `Status: ${response.status}`);
+                const data = await response.json();
+                log('postResult', `Resposta: ${JSON.stringify(data, null, 2)}`);
+
+                if (data.ok && data.comment) {
+                    log('postResult', `✅ ID do comentário criado: ${data.comment.id}`);
+                    document.getElementById('commentIdEdit').value = data.comment.id;
+                    document.getElementById('commentIdDelete').value = data.comment.id;
+                }
+            } catch (error) {
+                log('postResult', `❌ Erro: ${error.message}`, true);
+            }
+        }
+
+        async function getComments() {
+            clearResult('getResult');
+            const slideId = document.getElementById('slideIdGet').value;
+
+            log('getResult', `📥 GET /api/comments?slide=${slideId}`);
+
+            try {
+                const response = await fetch(`${BASE_URL}/api/comments?slide=${slideId}`);
+                log('getResult', `Status: ${response.status}`);
+                const data = await response.json();
+
+                if (Array.isArray(data)) {
+                    log('getResult', `✅ ${data.length} comentário(s) encontrado(s)`);
+                    data.forEach((comment, index) => {
+                        log('getResult', `\n--- Comentário ${index + 1} ---`);
+                        log('getResult', `ID: ${comment.id}`);
+                        log('getResult', `Autor: ${comment.author}`);
+                        log('getResult', `Texto: ${comment.text}`);
+                        log('getResult', `Data: ${comment.timestamp}`);
+                    });
+                } else {
+                    log('getResult', `Resposta: ${JSON.stringify(data, null, 2)}`);
+                }
+            } catch (error) {
+                log('getResult', `❌ Erro: ${error.message}`, true);
+            }
+        }
+
+        async function putComment() {
+            clearResult('putResult');
+            const commentId = document.getElementById('commentIdEdit').value;
+            const textEdit = document.getElementById('textEdit').value;
+
+            if (!commentId) {
+                log('putResult', `❌ Erro: ID do comentário vazio!`, true);
+                return;
+            }
+
+            log('putResult', `✏️ PUT /api/comments?id=${commentId}`);
+            log('putResult', `Novo texto: ${textEdit.substring(0, 50)}...`);
+
+            try {
+                const response = await fetch(`${BASE_URL}/api/comments?id=${commentId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: textEdit })
+                });
+
+                log('putResult', `Status: ${response.status}`);
+                const data = await response.json();
+                log('putResult', `Resposta: ${JSON.stringify(data, null, 2)}`);
+
+                if (data.ok) {
+                    log('putResult', `✅ Comentário editado com sucesso!`);
+                } else {
+                    log('putResult', `❌ ${data.error || 'Erro desconhecido'}`, true);
+                }
+            } catch (error) {
+                log('putResult', `❌ Erro de rede: ${error.message}`, true);
+            }
+        }
+
+        async function deleteComment() {
+            clearResult('deleteResult');
+            const commentId = document.getElementById('commentIdDelete').value;
+
+            if (!commentId) {
+                log('deleteResult', `❌ Erro: ID do comentário vazio!`, true);
+                return;
+            }
+
+            log('deleteResult', `🗑️ DELETE /api/comments?id=${commentId}`);
+
+            try {
+                const response = await fetch(`${BASE_URL}/api/comments?id=${commentId}`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                log('deleteResult', `Status: ${response.status}`);
+                const data = await response.json();
+                log('deleteResult', `Resposta: ${JSON.stringify(data, null, 2)}`);
+
+                if (data.ok) {
+                    log('deleteResult', `✅ Comentário apagado com sucesso!`);
+                } else {
+                    log('deleteResult', `❌ ${data.error || 'Erro desconhecido'}`, true);
+                }
+            } catch (error) {
+                log('deleteResult', `❌ Erro de rede: ${error.message}`, true);
+            }
+        }
+
+        window.addEventListener('load', () => {
+            log('postResult', `Página carregada - Base URL: ${BASE_URL}`);
+        });
+    </script>
+</body>
+</html>
