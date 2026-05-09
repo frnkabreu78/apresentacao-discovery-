@@ -105,5 +105,96 @@
         });
       })();
     </script>
+    <script>
+      // Injetar handlers de editar/deletar após o React carregar
+      const API_BASE = window.location.origin;
+
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      async function deleteComment(commentId) {
+        if (!confirm('Tem certeza que deseja deletar este comentário?')) return;
+        try {
+          const response = await fetch(`${API_BASE}/api/comments?id=${commentId}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+          });
+          const data = await response.json();
+          if (data.ok) {
+            location.reload();
+          }
+        } catch (error) {
+          console.error('Erro:', error);
+          alert('Erro ao deletar comentário');
+        }
+      }
+
+      async function updateComment(commentId, newText) {
+        if (!newText.trim()) {
+          alert('Texto não pode estar vazio');
+          return;
+        }
+        try {
+          const response = await fetch(`${API_BASE}/api/comments?id=${commentId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: newText.trim() })
+          });
+          const data = await response.json();
+          if (data.ok) {
+            location.reload();
+          }
+        } catch (error) {
+          console.error('Erro:', error);
+          alert('Erro ao editar comentário');
+        }
+      }
+
+      function toggleEditForm(commentId) {
+        const form = document.getElementById(`edit-form-${commentId}`);
+        if (form) {
+          form.style.display = form.style.display === 'none' ? 'block' : 'none';
+          if (form.style.display === 'block') {
+            const textarea = document.getElementById(`edit-text-${commentId}`);
+            if (textarea) {
+              textarea.focus();
+              textarea.select();
+            }
+          }
+        }
+      }
+
+      function saveEdit(commentId) {
+        const newText = document.getElementById(`edit-text-${commentId}`).value;
+        updateComment(commentId, newText);
+      }
+
+      // Observar mudanças no DOM e adicionar handlers aos botões
+      const observer = new MutationObserver(() => {
+        document.querySelectorAll('[data-action="delete-comment"]').forEach(btn => {
+          if (!btn.dataset.handlerAttached) {
+            const commentId = btn.dataset.commentId;
+            btn.onclick = () => deleteComment(commentId);
+            btn.dataset.handlerAttached = 'true';
+          }
+        });
+
+        document.querySelectorAll('[data-action="edit-comment"]').forEach(btn => {
+          if (!btn.dataset.handlerAttached) {
+            const commentId = btn.dataset.commentId;
+            btn.onclick = () => toggleEditForm(commentId);
+            btn.dataset.handlerAttached = 'true';
+          }
+        });
+      });
+
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    </script>
   </body>
 </html>
