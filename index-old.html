@@ -106,14 +106,9 @@
       })();
     </script>
     <script>
-      // Injetar handlers de editar/deletar após o React carregar
+      // Sistema robusto de interceptação de cliques para edit/delete
       const API_BASE = window.location.origin;
-
-      function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-      }
+      const processedButtons = new WeakSet();
 
       async function deleteComment(commentId) {
         if (!confirm('Tem certeza que deseja deletar este comentário?')) return;
@@ -124,10 +119,12 @@
           });
           const data = await response.json();
           if (data.ok) {
-            location.reload();
+            setTimeout(() => location.reload(), 300);
+          } else {
+            alert('Erro ao deletar: ' + (data.error || 'desconhecido'));
           }
         } catch (error) {
-          console.error('Erro:', error);
+          console.error('Erro delete:', error);
           alert('Erro ao deletar comentário');
         }
       }
@@ -145,56 +142,61 @@
           });
           const data = await response.json();
           if (data.ok) {
-            location.reload();
+            setTimeout(() => location.reload(), 300);
+          } else {
+            alert('Erro ao editar: ' + (data.error || 'desconhecido'));
           }
         } catch (error) {
-          console.error('Erro:', error);
+          console.error('Erro update:', error);
           alert('Erro ao editar comentário');
         }
       }
 
-      function toggleEditForm(commentId) {
-        const form = document.getElementById(`edit-form-${commentId}`);
-        if (form) {
-          form.style.display = form.style.display === 'none' ? 'block' : 'none';
-          if (form.style.display === 'block') {
-            const textarea = document.getElementById(`edit-text-${commentId}`);
-            if (textarea) {
-              textarea.focus();
-              textarea.select();
-            }
+      // Interceptar cliques GLOBALMENTE
+      document.addEventListener('click', function(e) {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+
+        const text = btn.textContent.trim();
+
+        // Deletar comentário
+        if (text.includes('🗑️') || text.includes('Deletar') || text.includes('Apagar')) {
+          e.preventDefault();
+          e.stopPropagation();
+          // Tentar extrair ID do atributo data ou do elemento pai
+          const commentEl = btn.closest('[data-comment-id]') || btn.closest('.comment-item');
+          const commentId = commentEl?.getAttribute('data-comment-id') || commentEl?.id?.replace('comment-', '');
+          if (commentId) {
+            deleteComment(commentId);
+            return;
           }
         }
-      }
 
-      function saveEdit(commentId) {
-        const newText = document.getElementById(`edit-text-${commentId}`).value;
-        updateComment(commentId, newText);
-      }
-
-      // Observar mudanças no DOM e adicionar handlers aos botões
-      const observer = new MutationObserver(() => {
-        document.querySelectorAll('[data-action="delete-comment"]').forEach(btn => {
-          if (!btn.dataset.handlerAttached) {
-            const commentId = btn.dataset.commentId;
-            btn.onclick = () => deleteComment(commentId);
-            btn.dataset.handlerAttached = 'true';
+        // Editar comentário
+        if (text.includes('✏️') || text.includes('Editar')) {
+          e.preventDefault();
+          e.stopPropagation();
+          const commentEl = btn.closest('[data-comment-id]') || btn.closest('.comment-item');
+          const commentId = commentEl?.getAttribute('data-comment-id') || commentEl?.id?.replace('comment-', '');
+          if (commentId) {
+            // Procura por um textarea que possa ser editado ou cria um prompt
+            const form = document.querySelector(`#edit-form-${commentId}`);
+            if (form) {
+              form.style.display = form.style.display === 'none' ? 'block' : 'none';
+            } else {
+              // Fallback: prompt direto
+              const currentText = btn.closest('.comment-item')?.querySelector('[data-comment-text]')?.textContent || '';
+              const newText = prompt('Editar comentário:', currentText);
+              if (newText !== null) {
+                updateComment(commentId, newText);
+              }
+            }
+            return;
           }
-        });
+        }
+      }, true);
 
-        document.querySelectorAll('[data-action="edit-comment"]').forEach(btn => {
-          if (!btn.dataset.handlerAttached) {
-            const commentId = btn.dataset.commentId;
-            btn.onclick = () => toggleEditForm(commentId);
-            btn.dataset.handlerAttached = 'true';
-          }
-        });
-      });
-
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      });
+      console.log('Sistema de editar/deletar comentários ativado');
     </script>
   </body>
 </html>

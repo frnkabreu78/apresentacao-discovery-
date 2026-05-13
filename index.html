@@ -107,24 +107,41 @@
     </script>
     <script>
       window.__commentAPI = {
+        getAuthHeader() {
+          const token = sessionStorage.getItem('pres-auth-token');
+          if (!token) return {};
+          return { 'Authorization': `Bearer ${token}` };
+        },
+
         async deleteComment(id) {
           if (!confirm('Tem certeza que deseja deletar este comentário?')) return;
           try {
             const r = await fetch(`${window.location.origin}/api/comments?id=${id}`, {
               method: 'DELETE',
-              headers: { 'Content-Type': 'application/json' }
+              headers: { 'Content-Type': 'application/json', ...this.getAuthHeader() }
             });
+            if (r.status === 401) {
+              sessionStorage.removeItem('pres-auth-token');
+              location.reload();
+              return;
+            }
             if ((await r.json()).ok) location.reload();
           } catch (e) { console.error(e); }
         },
+
         async updateComment(id, txt) {
           if (!txt.trim()) return alert('Texto não pode estar vazio');
           try {
             const r = await fetch(`${window.location.origin}/api/comments?id=${id}`, {
               method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
+              headers: { 'Content-Type': 'application/json', ...this.getAuthHeader() },
               body: JSON.stringify({ text: txt.trim() })
             });
+            if (r.status === 401) {
+              sessionStorage.removeItem('pres-auth-token');
+              location.reload();
+              return;
+            }
             if ((await r.json()).ok) location.reload();
           } catch (e) { console.error(e); }
         }
@@ -154,6 +171,8 @@
           }
         });
       }, 2000);
+
+      console.log('✅ Sistema de autenticação JWT ativado');
     </script>
   </body>
 </html>

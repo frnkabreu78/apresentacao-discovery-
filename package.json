@@ -2,9 +2,10 @@
   "name": "apresentacao-discovery",
   "version": "1.0.0",
   "description": "Pesquisa sobre perfis de lojistas - Apresentação interativa",
+  "type": "module",
   "scripts": {
     "build": "echo 'Static assets ready'",
-    "start": "echo 'Starting'"
+    "start": "node server.js"
   },
   "engines": {
     "node": "24.x"
