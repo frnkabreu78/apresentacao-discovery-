@@ -1,5 +1,25 @@
 {
   "version": 2,
   "buildCommand": "npm run build",
-  "outputDirectory": "."
+  "outputDirectory": ".",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/pesquisa", "destination": "/pesquisa/index.html" },
+    { "source": "/pesquisa/", "destination": "/pesquisa/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/pesquisa/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ]
 }

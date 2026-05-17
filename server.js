@@ -10,7 +10,7 @@ import commentsHandler from './api/comments.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const PORT = 5174;
+const PORT = 8000;
 
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
@@ -61,6 +61,16 @@ const server = http.createServer((req, res) => {
   let filePath = path.join(__dirname, parsedUrl.pathname === '/' ? 'index.html' : parsedUrl.pathname);
 
   fs.stat(filePath, (err, stats) => {
+    // If it's a directory, try its index.html
+    if (!err && stats.isDirectory()) {
+      filePath = path.join(filePath, 'index.html');
+      fs.stat(filePath, (err2, stats2) => serve(err2, stats2));
+      return;
+    }
+    serve(err, stats);
+  });
+
+  function serve(err, stats) {
     if (err || !stats.isFile()) {
       res.writeHead(404);
       res.end('Not found');
@@ -75,12 +85,18 @@ const server = http.createServer((req, res) => {
       '.json': 'application/json',
       '.png': 'image/png',
       '.jpg': 'image/jpeg',
-      '.svg': 'image/svg+xml'
+      '.svg': 'image/svg+xml',
+      '.mp4': 'video/mp4',
+      '.m4a': 'audio/mp4',
+      '.vtt': 'text/vtt',
+      '.pdf': 'application/pdf',
+      '.woff': 'font/woff',
+      '.woff2': 'font/woff2'
     }[ext] || 'application/octet-stream';
 
     res.writeHead(200, { 'Content-Type': contentType });
     fs.createReadStream(filePath).pipe(res);
-  });
+  }
 });
 
 server.listen(PORT, 'localhost', () => {
