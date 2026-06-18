@@ -909,6 +909,9 @@
     if (localStorage.getItem('portfolio-lang') !== 'en') return;
     translateTextNodes(document.body);
     translateAttrs(document.body);
+    // Mark that EN translations are live in the DOM — pfSetLang uses this to decide
+    // whether a reload is needed when switching back to PT.
+    window._pfTranslationsActive = true;
   }
 
   /* MutationObserver — watch React DOM updates */
@@ -946,8 +949,9 @@
   }
 
   // Expose for pfSetLang in app.html
+  // _pfTranslationsActive is set to true only inside applyAll(), not here at load time.
+  // Setting it here caused an infinite reload loop when portfolio-lang was 'pt'.
   window._applyTranslations = applyAll;
-  window._pfTranslationsActive = true;
 
   document.addEventListener('DOMContentLoaded', waitAndApply);
 
