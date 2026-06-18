@@ -186,9 +186,246 @@ body { padding-top: 45px; }
     document.getElementById('pf-btn-pt').classList.toggle('active', l === 'pt');
     document.querySelectorAll('.pf-lang-en').forEach(function(el){ el.style.display = l === 'en' ? '' : 'none'; });
     document.querySelectorAll('.pf-lang-pt').forEach(function(el){ el.style.display = l === 'pt' ? '' : 'none'; });
+    window._pfLang = l;
+    if (l === 'en') {
+      if (window._applyTranslations) window._applyTranslations();
+    } else if (window._pfTranslationsActive) {
+      // Reverting to PT after EN was applied: reload to restore original DOM cleanly
+      try {
+        var slideEl = document.querySelector('[data-slide-index]');
+        if (slideEl) localStorage.setItem('_pres_restore_slide', slideEl.getAttribute('data-slide-index'));
+      } catch(e) {}
+      window._pfReloading = true;
+      window.location.reload();
+    }
   };
   var cur = localStorage.getItem('portfolio-lang') || 'en';
+  window._pfLang = cur;
   window.pfSetLang(cur);
+})();
+</script>
+
+<script>
+(function(){
+  // Exact text-node PT->EN dictionary (keys = trimmed text node strings)
+  var dict = {
+    // Slide titles
+    "Capa": "Cover",
+    "Além da superfície: ciclo financeiro real": "Beyond the surface: real financial cycle",
+    "O que queríamos responder": "What we wanted to answer",
+    "Temas que guiaram o roteiro": "Themes that guided the script",
+    "Duas lentes de análise": "Two lenses of analysis",
+    "Amostragem e método": "Sampling and method",
+    "Hipóteses iniciais por tema": "Initial hypotheses by theme",
+    "Perfis entrevistados — parte 1": "Interviewed profiles — part 1",
+    "Perfis entrevistados — parte 2": "Interviewed profiles — part 2",
+    "Arquétipos comportamentais": "Behavioural archetypes",
+    "Sumário executivo dos achados": "Executive summary of findings",
+    "Mitos vs realidade (síntese)": "Myths vs reality (synthesis)",
+    "Veredito da hipótese inicial": "Verdict on the initial hypothesis",
+    "Onde o caixa realmente sangra": "Where cash really bleeds",
+    "Resumo dos achados (vídeo)": "Summary of findings (video)",
+    "Mecanismos de defesa — visão geral": "Defence mechanisms — overview",
+    "Mecanismo: dropshipping": "Mechanism: dropshipping",
+    "Mecanismo: produção sob demanda": "Mechanism: on-demand production",
+    "Mecanismo: autofinanciamento": "Mechanism: self-financing",
+    "Mecanismo: alavancagem fornecedor": "Mechanism: supplier leverage",
+    "Matriz diagnóstica: fit de crédito": "Diagnostic matrix: credit fit",
+    "Aderência arquétipo 1: caixa forte": "Archetype 1 fit: cash strong",
+    "Aderência arquétipo 2: ágeis e on-demand": "Archetype 2 fit: agile and on-demand",
+    "Aderência arquétipo 3: varejo raiz e escaladores": "Archetype 3 fit: traditional retail and scalers",
+    "Deep dive: varejo tradicional (alto giro)": "Deep dive: traditional retail (high turnover)",
+    "Deep dive: alta performance sob demanda": "Deep dive: high performance on-demand",
+    "Deep dive: segmento impenetrável": "Deep dive: impenetrable segment",
+    "Deep dive: dropshipping caixa invertido": "Deep dive: inverted-cash dropshipping",
+    "Próximos passos: trechos em vídeo": "Next steps: video excerpts",
+    "Estela Zanforlin — Atelier Poesia": "Estela Zanforlin — Atelier Poesia",
+    "Joyce — Mymo Capas": "Joyce — Mymo Capas",
+    "Douglas Eusébio — Loja Dougie": "Douglas Eusébio — Loja Dougie",
+    "Mayke Gomes — Acessórios masculinos": "Mayke Gomes — Men's accessories",
+    "Andressa Sanches — Moda feminina": "Andressa Sanches — Women's fashion",
+    "Gaby Trus — Acessórios artesanais": "Gaby Trus — Handmade accessories",
+    "Aline Sorelah — Semijoias": "Aline Sorelah — Costume jewellery",
+    "Viviane — Color Zeds": "Viviane — Color Zeds",
+    // UI strings
+    "Início": "Home",
+    "Próximo": "Next",
+    "Índice": "Index",
+    "Vídeo": "Video",
+    "Áudio do slide": "Slide audio",
+    "Navegação entre slides": "Slide navigation",
+    "Capítulos e slides": "Chapters and slides",
+    "Abrir índice da apresentação": "Open presentation index",
+    "Fechar comentários": "Close comments",
+    "Apagar comentário": "Delete comment",
+    "Editar comentário": "Edit comment",
+    "Português (Brasil)": "Portuguese (Brazil)",
+    "Erro de conexão. Tenta de novo.": "Connection error. Try again.",
+    "Modelos apresentados nos próximos slides": "Archetypes shown in following slides",
+    "Análise estratégica da entrevista": "Strategic interview analysis",
+    "The Explainer — Escapando da armadilha do crédito (resumo dos achados)": "The Explainer — Escaping the Credit Trap (findings summary)",
+    "Adoção de crédito": "Credit adoption",
+    "Descoberta de crédito": "Credit discovery",
+    "Descoberta do crédito": "Credit discovery",
+    "Hipóteses e métricas": "Hypotheses and metrics",
+    "JTBD, atritos e forças": "JTBD, frictions and forces",
+    "Forças e evidências": "Forces and evidence",
+    "Realizada em março de 2026": "Conducted in March 2026",
+    "Março de 2026": "March 2026",
+    "16 de março de 2026": "March 16, 2026",
+    "18 de março de 2026": "March 18, 2026",
+    "19 de março de 2026": "March 19, 2026",
+    "6 de março de 2026": "March 6, 2026",
+    "O seu navegador não suporta reprodução de vídeo HTML5.": "Your browser does not support HTML5 video playback.",
+    "O seu navegador não suporta reprodução de áudio HTML5.": "Your browser does not support HTML5 audio playback.",
+    "Não contrata empréstimos comerciais.": "Does not take commercial loans.",
+    "Rejeita cobrança passiva / retenção automática no crédito.": "Rejects passive collection / automatic retention on credit.",
+    // Section / chapter names
+    "Além da superfície: o verdadeiro ciclo financeiro dos lojistas": "Beyond the Surface: The Real Financial Cycle of Merchants",
+    "Arquétipos comportamentais — Caixa Forte, Ágeis e On-Demand, Varejo Raiz e Escaladores": "Behavioural Archetypes — Cash Strong, Agile & On-Demand, Traditional Retail & Scalers",
+    "O Descasamento de Caixa para Estoque Não é a Dor Principal": "Cash-Stock Mismatch Is Not the Core Pain",
+    "Resumo dos achados — The Explainer": "Findings Summary — The Explainer",
+    // Archetype / merchant tags
+    "Alto Giro + Consolidação": "High Turnover + Consolidation",
+    "Consolidação de marca": "Brand consolidation",
+    "Consolidação · Conservadora": "Consolidation · Conservative",
+    "Consolidação · Maturidade financeira": "Consolidation · Financial maturity",
+    "Consolidação · Técnica": "Consolidation · Technical",
+    "Crescimento e diversificação": "Growth and diversification",
+    "Crescimento · Hiper-analítica": "Growth · Hyper-analytical",
+    "Digitalização": "Digitalization",
+    "Expansão de mix": "Mix expansion",
+    "Expansão logística": "Logistics expansion",
+    "Migração": "Migration",
+    "Migração de plataforma": "Platform migration",
+    "Transição de modelo": "Model transition",
+    "Transição para pronta-entrega": "Transition to ready-to-ship",
+    "Fundação (há 3 anos)": "Founded (3 years ago)",
+    "Início (há 8 anos)": "Started (8 years ago)",
+    "Início (há 3 anos)": "Started (3 years ago)",
+    "Início (fev/2023)": "Started (Feb/2023)",
+    "Futuro próximo": "Near future",
+    "Fase de estruturação": "Structuring phase",
+    "Pós-pandemia": "Post-pandemic",
+    "Maturação do marketing": "Marketing maturation",
+    "Maturidade comercial (últimos 6 meses)": "Commercial maturity (last 6 months)",
+    "Fundo de tráfego": "Traffic fund",
+    // Financial / research labels
+    "capital próprio": "own capital",
+    "crédito Nuvemshop": "Nuvemshop credit",
+    "tráfego pago": "paid traffic",
+    "conciliação automática": "automatic reconciliation",
+    "otimização de margem": "margin optimization",
+    // Hypothesis short titles
+    "Hipótese 1: O Ciclo de Caixa e o Gatilho Real. Detalhes da hipótese": "Hypothesis 1: The Cash Cycle and the Real Trigger. Hypothesis details",
+    "Hipótese 2: Atributos de Decisão e Trade-offs. Detalhes da hipótese": "Hypothesis 2: Decision Attributes and Trade-offs. Hypothesis details",
+    "Hipótese 3: Fricção da cobrança e retenção passiva. Detalhes da hipótese": "Hypothesis 3: Billing friction and passive retention. Hypothesis details",
+    // Merchant profile one-liners
+    "Acessórios artesanais": "Handmade accessories",
+    "Acessórios masculinos": "Men's accessories",
+    "Adoção Nuvemshop": "Nuvemshop adoption",
+    "Anúncios em Facebook Ads e uso de plataformas de e-commerce.": "Facebook Ads and e-commerce platform usage.",
+    "Aversão a dívida não planejada; operação à vista com capital próprio.": "Aversion to unplanned debt; cash-based operation with own capital.",
+    "Aversão a risco e barreira com juros e prazos longos.": "Risk aversion and barrier to high interest rates and long terms.",
+    "B2B (corte a laser); fornecedores 30–60 dias; caixa saudável.": "B2B (laser cutting); 30–60 day suppliers; healthy cash flow.",
+    "Camisas retrô sem estoque; fluxo de caixa saudável.": "Retro shirts without inventory; healthy cash flow.",
+    "Capas de telemóvel personalizadas, foco em nichos específicos.": "Personalised phone cases, focus on specific niches.",
+    "Capital de giro próprio e apertado; custo alto de aquisição (tráfego pago).": "Own working capital and tight; high customer acquisition cost (paid traffic).",
+    "Começa a loja «bem crua», sem experiência prévia em negócios, mas com base sólida em design e códigos.": "Starts the store «very raw», without prior business experience, but with a solid background in design and coding.",
+    "Começou a vender acessórios artesanais feitos pela própria.": "Started selling handmade accessories made by herself.",
+    "Começou sem estoque próprio para validar mercado e peças.": "Started without own inventory to validate market and products.",
+    "Crédito externo mais barato já disponível em banco.": "Cheaper external credit already available at bank.",
+    "Crédito para infraestrutura e expansão, não para giro de estoque.": "Credit for infrastructure and expansion, not inventory turnover.",
+    "Crédito só para expansão estrutural; não para curto prazo.": "Credit only for structural expansion; not for short term.",
+    "Desenvolvimento de um ERP próprio em Excel para garantir visibilidade financeira total.": "Development of own ERP in Excel to ensure total financial visibility.",
+    "Digitalização (há 6 anos)": "Digitalization (6 years ago)",
+    "Educação financeira; ERP próprio no Excel para margens.": "Financial education; own ERP in Excel for margins.",
+    "Escolheu a plataforma pela facilidade de integração com Meta Ads e Google Ads.": "Chose the platform for its ease of integration with Meta Ads and Google Ads.",
+    "Expansão manual para uma segunda loja de artes digitais (": "Manual expansion to a second digital arts store (",
+    "Expansão para infoprodutos (Hotmart), materiais (Nuvemshop) e máquinas (WhatsApp).": "Expansion into infoproducts (Hotmart), materials (Nuvemshop) and machines (WhatsApp).",
+    "Fase de recuperação (estabilizado em R$ 8k–10k), à procura de capital para": "Recovery phase (stabilised at R$ 8k–10k), looking for capital for",
+    "Foco em CRM e recompra, com clientes fiéis comprando o mesmo modelo em múltiplas cores.": "Focus on CRM and repurchase, with loyal customers buying the same model in multiple colours.",
+    "Foco em Meta Ads para atingir público de 30–50 anos, abandonando canais de baixo retorno como TikTok.": "Focus on Meta Ads to reach the 30–50 age group, abandoning low-return channels like TikTok.",
+    "Gestão voltada à eficiência logística e ao monitoramento de taxas financeiras para preservar margem.": "Management focused on logistics efficiency and monitoring financial rates to preserve margin.",
+    "Início com a irmã (plano B de carreira) sob o nome": "Started with sister (career plan B) under the name",
+    "Início da loja online motivada pela maternidade e pelo desejo de trabalhar em casa.": "Online store started motivated by maternity and the desire to work from home.",
+    "Início na Nuvemshop; WhatsApp descartado pela complexidade do catálogo —": "Started on Nuvemshop; WhatsApp discarded due to catalogue complexity —",
+    "Migrou para estoque próprio para garantir experiência de compra e agilidade logística (foco em Sedex).": "Migrated to own inventory to ensure purchase experience and logistics agility (focus on Sedex).",
+    "Mudança do dropshipping internacional para o nacional (fornecedores brasileiros).": "Shift from international to domestic dropshipping (Brazilian suppliers).",
+    "Oportunidade em canecas e garrafas sem capital inicial para maquinário.": "Opportunity in mugs and bottles without initial capital for machinery.",
+    "Planejamento para desenvolver um ERP próprio com auxílio de IA e migrar 100% da operação para processos automatizados.": "Planning to develop own ERP with AI assistance and migrate 100% of operations to automated processes.",
+    "Planejamento para expansão para loja física utilizando": "Planning expansion to physical store using",
+    "Primeiro empréstimo bancário (12 meses) para mudança para centro de logística maior, com estantes e rede elétrica.": "First bank loan (12 months) to move to larger logistics centre, with shelving and electrical network.",
+    "Produz após a venda; compra material com o fluxo do dia.": "Produces after the sale; buys material with the day's cash flow.",
+    "Profissionalização do": "Professionalisation of",
+    "Queda forte de faturamento (de cerca de R$ 19k para R$ 3k), com recurso a empréstimos bancários e cartões para aguentar.": "Sharp revenue drop (from ~R$ 19k to R$ 3k), resorting to bank loans and credit cards to survive.",
+    "Saiu da Loja Integrada por falta de recursos de tráfego pago; testou Shopify, mas achou «tenebrosa» (complexa).": "Left Loja Integrada due to lack of paid traffic features; tested Shopify but found it «gloomy» (complex).",
+    "Salto de faturamento de R$ 6 mil para R$ 10–12 mil, iniciando a transição de MEI para ME.": "Revenue jump from R$ 6k to R$ 10–12k, beginning the transition from MEI to ME.",
+    "Sem retenção de saldo; contrato lido em detalhe antes de assinar.": "No balance retention; contract read in detail before signing.",
+    "Semijoias autorais; forte aversão a risco de crédito; controle detalhado (\"cartesiano\").": "Own-design jewellery; strong credit risk aversion; detailed control (\"Cartesian\").",
+    "Sob demanda, atua sozinha; forte conhecimento técnico (tráfego).": "On-demand, works alone; strong technical knowledge (traffic).",
+    "Transição de compras à vista para prazos de 30–60 dias com fornecedores, estabilizando o fluxo de caixa corporativo.": "Transition from cash purchases to 30–60 day terms with suppliers, stabilising corporate cash flow.",
+    "Vendas via Facebook Marketplace com entrega presencial em estações.": "Sales via Facebook Marketplace with in-person delivery at stations.",
+    "Visualizou a oferta de R$ 9.000 no painel da Nuvemshop, mas não prosseguiu por achar o valor baixo e a jornada burocrática.": "Viewed the R$ 9,000 offer in the Nuvemshop panel but did not proceed, finding the value low and the journey bureaucratic.",
+    "Visualizou pop-ups na plataforma e fez cerca de 3 simulações por curiosidade e teste.": "Viewed platform pop-ups and ran about 3 simulations out of curiosity and testing.",
+    "Crescimento B2B e necessidade de gestão rápida esbarram em bugs no app iOS e emissor fiscal engessado.": "B2B growth and need for fast management hampered by iOS app bugs and rigid tax issuer.",
+    "2016 (fundação)": "2016 (founded)",
+    "Principal fricção: falta de": "Main friction: lack of"
+  };
+
+  var originals = new Map();
+  function translateNode(node){
+    if (node.nodeType !== 3) return;
+    var orig = node.nodeValue;
+    if (!orig || !orig.trim()) return;
+    var trimmed = orig.trim();
+    if (window._pfLang === 'en') {
+      if (dict[trimmed]) {
+        if (!originals.has(node)) originals.set(node, orig);
+        node.nodeValue = orig.replace(trimmed, dict[trimmed]);
+        window._pfTranslationsActive = true;
+      } else {
+        // partial / substring matching for JSX-fragmented nodes
+        for (var k in dict) {
+          if (k.length > 8 && orig.indexOf(k) !== -1) {
+            if (!originals.has(node)) originals.set(node, orig);
+            node.nodeValue = node.nodeValue.split(k).join(dict[k]);
+            window._pfTranslationsActive = true;
+          }
+        }
+      }
+    }
+  }
+
+  function translateAll(){
+    var root = document.getElementById('root') || document.body;
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    var node;
+    while ((node = walker.nextNode())) translateNode(node);
+  }
+
+  var observer = new MutationObserver(function(){
+    if (window._pfLang !== 'en') return;
+    clearTimeout(window._xlateTimer);
+    window._xlateTimer = setTimeout(translateAll, 50);
+  });
+
+  function startObserver(){
+    var root = document.getElementById('root');
+    if (!root) { setTimeout(startObserver, 100); return; }
+    observer.observe(root, { childList: true, subtree: true, characterData: true });
+    if (window._pfLang === 'en') translateAll();
+  }
+
+  window._applyTranslations = function(){
+    if (window._pfLang === 'en') translateAll();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startObserver);
+  } else {
+    startObserver();
+  }
 })();
 </script>
 
