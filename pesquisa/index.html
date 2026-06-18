@@ -164,7 +164,7 @@ html[lang="pt"] [data-lang-en] { display: none }
 
 <nav>
   <div class="nav-left">
-    <a class="nav-back" href="../../cases/lending-nuvemshop/#insights">
+    <a class="nav-back" href="https://portfolio-frankabreu.vercel.app/cases/lending-nuvemshop/#insights">
       <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
       <span>Lending Nuvemshop</span>
     </a>
@@ -206,7 +206,7 @@ html[lang="pt"] [data-lang-en] { display: none }
       <span data-lang-pt>Acessar pesquisa →</span>
     </button>
   </form>
-  <a href="../../cases/lending-nuvemshop/#insights" class="gate-back">
+  <a href="https://portfolio-frankabreu.vercel.app/cases/lending-nuvemshop/#insights" class="gate-back">
     <span data-lang-en>← Back to case study</span>
     <span data-lang-pt>← Voltar ao case</span>
   </a>
@@ -215,9 +215,14 @@ html[lang="pt"] [data-lang-en] { display: none }
 <script>
   const HASH = 'e98724ea95041623e9652e604a6ba7cb0a7bb218820a4b16854c165c1b0784ce';
 
-  if (sessionStorage.getItem('pesquisa_auth') === 'ok') {
-    window.location.replace('./app.html');
+  function isPesquisaAuthed(){
+    if(sessionStorage.getItem('pesquisa_auth')==='ok') return true;
+    try{
+      var d=JSON.parse(localStorage.getItem('pesquisa_auth_v2')||'null');
+      return d&&(Date.now()-d.ts<30*24*60*60*1000);
+    }catch(e){return false;}
   }
+  if(isPesquisaAuthed()) window.location.replace('./app.html');
 
   function setLanguage(lang) {
     localStorage.setItem('portfolio-lang', lang);
@@ -251,6 +256,7 @@ html[lang="pt"] [data-lang-en] { display: none }
       var hash = Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
       if (hash === HASH) {
         sessionStorage.setItem('pesquisa_auth', 'ok');
+        localStorage.setItem('pesquisa_auth_v2', JSON.stringify({ ts: Date.now() }));
         window.location.replace('./app.html');
       } else {
         errEl.textContent = document.documentElement.lang === 'pt'

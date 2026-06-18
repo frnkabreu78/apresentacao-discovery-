@@ -2,6 +2,19 @@
 <html lang="pt-BR" data-presentation-identity="brand-guidelines" data-brand-slide="cover">
   <head>
     <meta charset="UTF-8" />
+    <script>
+    // Auth guard — runs before any asset loads
+    (function(){
+      function isPesquisaAuthed(){
+        if(sessionStorage.getItem('pesquisa_auth')==='ok') return true;
+        try{
+          var d=JSON.parse(localStorage.getItem('pesquisa_auth_v2')||'null');
+          return d&&(Date.now()-d.ts<30*24*60*60*1000);
+        }catch(e){return false;}
+      }
+      if(!isPesquisaAuthed()) window.location.replace('./index.html');
+    })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pesquisa — perfis de lojistas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -151,9 +164,10 @@ body { padding-top: 45px; }
 
 <div id="pf-nav">
   <div id="pf-nav-left">
-    <a id="pf-nav-back" href="../cases/lending-nuvemshop/#insights">
+    <a id="pf-nav-back" href="https://portfolio-frankabreu.vercel.app/cases/lending-nuvemshop/#insights">
       <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      <span id="pf-nav-back-label">Lending Nuvemshop</span>
+      <span class="pf-lang-en">Lending Nuvemshop</span>
+      <span class="pf-lang-pt" style="display:none">Lending Nuvemshop</span>
     </a>
     <div id="pf-nav-divider"></div>
     <span id="pf-nav-logo">Frank <em>Abreu</em></span>
@@ -165,17 +179,16 @@ body { padding-top: 45px; }
 </div>
 <script>
 (function(){
-  function pfSetLang(l){
+  window.pfSetLang = function(l){
     localStorage.setItem('portfolio-lang', l);
+    document.documentElement.lang = l === 'pt' ? 'pt-BR' : 'en';
     document.getElementById('pf-btn-en').classList.toggle('active', l === 'en');
     document.getElementById('pf-btn-pt').classList.toggle('active', l === 'pt');
-    // Dispatch storage event so any SPA listening can pick it up
-    window.dispatchEvent(new StorageEvent('storage', { key: 'portfolio-lang', newValue: l }));
-  }
-  // Set initial active state
+    document.querySelectorAll('.pf-lang-en').forEach(function(el){ el.style.display = l === 'en' ? '' : 'none'; });
+    document.querySelectorAll('.pf-lang-pt').forEach(function(el){ el.style.display = l === 'pt' ? '' : 'none'; });
+  };
   var cur = localStorage.getItem('portfolio-lang') || 'en';
-  document.getElementById('pf-btn-en').classList.toggle('active', cur === 'en');
-  document.getElementById('pf-btn-pt').classList.toggle('active', cur === 'pt');
+  window.pfSetLang(cur);
 })();
 </script>
 
@@ -189,14 +202,7 @@ body { padding-top: 45px; }
         </p>
       </div>
     </div>
-    <script>
-      // Auth check - redirect to login if not authenticated
-      (function() {
-        if (sessionStorage.getItem('pesquisa_auth') !== 'ok') {
-          window.location.href = './index.html';
-        }
-      })();
-    </script>
+
     <script>
       (function () {
         function appMounted() {
