@@ -1,339 +1,272 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pesquisa — Perfis de Lojistas</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@6..72,600;6..72,700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <style>
-        :root {
-            --bg: #fafafa;
-            --bg-secondary: #fff;
-            --text: #1a1a1a;
-            --text-secondary: #666;
-            --accent: #1a6b9f;
-            --accent-strong: #0d4a7a;
-            --warm: #f5e6d3;
-            --border: #e8e8e8;
-            --error: #d32f2f;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0a0a0a;
-                --bg-secondary: #1a1a1a;
-                --text: #f5f5f5;
-                --text-secondary: #aaa;
-                --accent: #5eb3e8;
-                --accent-strong: #7ec5f0;
-                --warm: #2a1f0f;
-                --border: #333;
-            }
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            width: 100%;
-            height: 100%;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-
-        .login-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 2rem;
-        }
-
-        .login-card {
-            width: 100%;
-            max-width: 420px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 3rem 2.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .login-card {
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            }
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .login-title {
-            font-family: 'Fraunces', serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 0.5rem;
-        }
-
-        .login-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        label {
-            display: block;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        input[type="password"] {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg);
-            color: var(--text);
-            font-family: inherit;
-            font-size: 16px;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        input[type="password"]:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(26, 107, 159, 0.1);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            input[type="password"]:focus {
-                box-shadow: 0 0 0 3px rgba(94, 179, 232, 0.2);
-            }
-        }
-
-        .error-message {
-            font-size: 13px;
-            color: var(--error);
-            margin-top: 0.5rem;
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 1rem;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-        }
-
-        .submit-btn:hover {
-            background: var(--accent-strong);
-        }
-
-        .submit-btn:active {
-            transform: scale(0.98);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        [data-lang="pt"] { display: none; }
-        [data-lang-pt] { display: none; }
-
-        html[lang="pt-BR"] [data-lang="pt"],
-        html[lang="pt-BR"] [data-lang-pt] {
-            display: inline;
-        }
-
-        html[lang="pt-BR"] [data-lang="en"],
-        html[lang="pt-BR"] [data-lang-en] {
-            display: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research — Lending Nuvemshop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-#pf-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .75rem 1.5rem; background: rgba(10,10,10,0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.09); font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif; }
-#pf-nav-left { display: flex; align-items: center; gap: 1rem; }
-#pf-nav-back { display: inline-flex; align-items: center; gap: .45rem; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,0.55); text-decoration: none; transition: color .2s; white-space: nowrap; }
-#pf-nav-back:hover { color: #fff; }
-#pf-nav-back svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
-#pf-nav-divider { width: 1px; height: 14px; background: rgba(255,255,255,0.15); }
-#pf-nav-logo { font-size: .8rem; color: rgba(255,255,255,0.38); white-space: nowrap; }
-#pf-nav-logo em { color: rgba(255,255,255,0.6); font-style: italic; }
-#pf-lang-toggle { display: flex; gap: .1rem; padding: .2rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); background: transparent; }
-#pf-lang-toggle button { background: none; border: none; font-family: inherit; font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,0.45); cursor: pointer; padding: .3rem .5rem; transition: color .15s, background .15s; border-radius: 4px; font-weight: 600; }
-#pf-lang-toggle button:hover { color: #fff; }
-#pf-lang-toggle button.active { background: rgba(255,255,255,0.12); color: #fff; }
-body { padding-top: 45px; }
+:root {
+  --bg: #FAFAF7;
+  --paper: #0A0A0A;
+  --warm: #F0EFE9;
+  --muted: #6B6B6B;
+  --border: rgba(10,10,10,0.08);
+  --border-strong: rgba(10,10,10,0.15);
+  --accent: #2D5BFF;
+  --accent-pale: rgba(45,91,255,0.08);
+  --serif: 'Fraunces', serif;
+  --sans: 'Inter Tight', 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+[data-theme="dark"] {
+  --bg: #0A0A0A;
+  --paper: #FAFAF7;
+  --warm: #141414;
+  --muted: #8A8A8A;
+  --border: rgba(250,250,247,0.1);
+  --border-strong: rgba(250,250,247,0.18);
+  --accent: #5F84FF;
+  --accent-pale: rgba(95,132,255,0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--paper);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 5rem 1.5rem 2rem;
+  transition: background .3s ease, color .3s ease;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .75rem 1.5rem;
+  background: rgba(10,10,10,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.09);
+}
+[data-theme="dark"] nav { background: rgba(10,10,10,0.92) }
+.nav-left { display: flex; align-items: center; gap: 1rem }
+.nav-back {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.55); text-decoration: none; transition: color .2s; white-space: nowrap;
+}
+.nav-back:hover { color: #fff }
+.nav-back svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0 }
+.nav-divider { width: 1px; height: 14px; background: rgba(255,255,255,0.15) }
+.nav-logo { font-family: var(--mono); font-size: .72rem; color: rgba(255,255,255,0.38); white-space: nowrap }
+.nav-logo em { color: rgba(255,255,255,0.6); font-style: italic }
+.nav-right { display: flex; align-items: center; gap: .75rem }
+.lang-toggle { display: flex; gap: .1rem; padding: .2rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15) }
+.lang-toggle button {
+  background: none; border: none; font-family: var(--mono); font-size: .6rem; letter-spacing: .12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.45); cursor: pointer;
+  padding: .3rem .5rem; transition: color .15s, background .15s; border-radius: 4px; font-weight: 600;
+}
+.lang-toggle button:hover { color: #fff }
+.lang-toggle button.active { background: rgba(255,255,255,0.12); color: #fff }
+.theme-btn {
+  background: none; border: none; cursor: pointer; color: rgba(255,255,255,0.45);
+  display: flex; align-items: center; padding: .3rem; transition: color .15s;
+}
+.theme-btn:hover { color: #fff }
+.theme-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round }
+html:not([data-theme="dark"]) .icon-sun { display: none }
+html[data-theme="dark"] .icon-moon { display: none }
+
+/* GATE CARD */
+.gate-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  padding: 2.75rem 2.25rem;
+  box-shadow: 0 32px 80px rgba(0,0,0,.12), 0 4px 16px rgba(0,0,0,.06);
+}
+[data-theme="dark"] .gate-card { box-shadow: 0 32px 80px rgba(0,0,0,.5), 0 4px 16px rgba(0,0,0,.25) }
+.gate-eyebrow {
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: .6rem;
+}
+.gate-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--accent) }
+.gate-title { font-family: var(--serif); font-size: 2rem; font-weight: 300; line-height: 1.15; margin-bottom: .75rem }
+.gate-title em { font-style: italic; color: var(--accent) }
+.gate-sub { font-size: .88rem; color: var(--muted); line-height: 1.65; margin-bottom: 2rem }
+.gate-field { margin-bottom: .6rem }
+.gate-field input {
+  width: 100%; padding: .85rem 1rem;
+  border: 1px solid var(--border-strong); border-radius: 8px;
+  background: var(--warm); color: var(--paper);
+  font-family: var(--sans); font-size: 1rem; letter-spacing: .06em;
+  outline: none; transition: border-color .2s, box-shadow .2s;
+}
+.gate-field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-pale) }
+.gate-error {
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .08em;
+  color: #E53E3E; margin-bottom: .9rem; min-height: 1em; opacity: 0; transition: opacity .2s;
+}
+.gate-error.show { opacity: 1 }
+.gate-submit {
+  width: 100%; padding: .9rem;
+  background: var(--paper); color: var(--bg);
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
+  border: none; border-radius: 8px; cursor: pointer; transition: background .2s; font-weight: 500;
+  margin-bottom: 1.25rem;
+}
+.gate-submit:hover { background: var(--accent); color: #fff }
+.gate-submit:disabled { opacity: .5; cursor: not-allowed }
+.gate-back {
+  display: block; text-align: center;
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none; transition: color .2s;
+}
+.gate-back:hover { color: var(--paper) }
+
+/* lang */
+[data-lang-pt] { display: none }
+html[lang="pt"] [data-lang-pt] { display: inline }
+html[lang="pt"] [data-lang-en] { display: none }
+
+@media (max-width: 480px) {
+  .gate-card { padding: 2rem 1.5rem }
+  .gate-title { font-size: 1.6rem }
+}
 </style>
+<script>
+(function() {
+  var theme = localStorage.getItem('portfolio-theme') || 'light';
+  document.documentElement.setAttribute('data-theme', theme);
+  var lang = localStorage.getItem('portfolio-lang') || 'en';
+  document.documentElement.lang = lang;
+})();
+</script>
 </head>
 <body>
-<div id="pf-nav">
-  <div id="pf-nav-left">
-    <a id="pf-nav-back" href="../../cases/lending-nuvemshop/#insights">
+
+<nav>
+  <div class="nav-left">
+    <a class="nav-back" href="../../cases/lending-nuvemshop/#insights">
       <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
       <span>Lending Nuvemshop</span>
     </a>
-    <div id="pf-nav-divider"></div>
-    <span id="pf-nav-logo">Frank <em>Abreu</em></span>
+    <div class="nav-divider"></div>
+    <span class="nav-logo">Frank <em>Abreu</em></span>
   </div>
-  <div id="pf-lang-toggle">
-    <button onclick="pfSetLang('en')" id="pf-btn-en">EN</button>
-    <button onclick="pfSetLang('pt')" id="pf-btn-pt">PT</button>
-  </div>
-</div>
-<script>
-(function(){
-  function pfSetLang(l){
-    localStorage.setItem('portfolio-lang', l);
-    document.getElementById('pf-btn-en').classList.toggle('active', l === 'en');
-    document.getElementById('pf-btn-pt').classList.toggle('active', l === 'pt');
-    // Sync with the existing toggleLanguage() on this page
-    var html = document.documentElement;
-    html.lang = l === 'pt' ? 'pt-BR' : 'en';
-    localStorage.setItem('pesquisa_lang', html.lang);
-  }
-  var cur = localStorage.getItem('portfolio-lang') || 'en';
-  document.getElementById('pf-btn-en').classList.toggle('active', cur === 'en');
-  document.getElementById('pf-btn-pt').classList.toggle('active', cur === 'pt');
-})();
-</script>
-
-    <div class="login-container">
-        <div class="login-card">
-            <div class="login-header">
-                <h1 class="login-title">
-                    <span data-lang="en">Research</span>
-                    <span data-lang="pt">Pesquisa</span>
-                </h1>
-                <p class="login-subtitle">
-                    <span data-lang="en">Shopper profiles</span>
-                    <span data-lang="pt">Perfis de Lojistas</span>
-                </p>
-            </div>
-
-            <form onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label data-lang="en">Password</label>
-                    <label data-lang="pt" style="display: none;">Senha</label>
-                    <input
-                        type="password"
-                        id="passwordInput"
-                        placeholder="••••••••"
-                        autocomplete="off"
-                        required
-                    />
-                    <div class="error-message" id="errorMessage"></div>
-                </div>
-
-                <button type="submit" class="submit-btn">
-                    <span data-lang="en">Access →</span>
-                    <span data-lang="pt" style="display: none;">Acessar →</span>
-                </button>
-            </form>
-
-            <p style="text-align: center; margin-top: 1.5rem; font-size: 12px; color: var(--text-secondary);">
-                <span data-lang="en">Protected content • Password required</span>
-                <span data-lang="pt" style="display: none;">Conteúdo protegido • Senha obrigatória</span>
-            </p>
-        </div>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button data-lang="en" onclick="setLanguage('en')">EN</button>
+      <button data-lang="pt" onclick="setLanguage('pt')">PT</button>
     </div>
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+      <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </button>
+  </div>
+</nav>
 
-    <script>
-        const PASSWORD_HASH = 'ad24c209ea99b28cf85836a971d2f05cbedaf5f9c79d290ef101eb9480d03c22';
+<div class="gate-card">
+  <div class="gate-eyebrow">
+    <span data-lang-en>Case 01 — Nuvemshop</span>
+    <span data-lang-pt>Case 01 — Nuvemshop</span>
+  </div>
+  <h2 class="gate-title">
+    <span data-lang-en>Research <em>Report</em></span>
+    <span data-lang-pt>Relatório de <em>Pesquisa</em></span>
+  </h2>
+  <p class="gate-sub">
+    <span data-lang-en>This research report is password protected. Use the same password as the case study.</span>
+    <span data-lang-pt>Este relatório de pesquisa é protegido por senha. Use a mesma senha do case study.</span>
+  </p>
+  <form onsubmit="handleLogin(event)" autocomplete="off">
+    <div class="gate-field">
+      <input type="password" id="gate-pw" placeholder="••••••••" autocomplete="new-password" autofocus>
+    </div>
+    <div id="gate-error" class="gate-error"></div>
+    <button type="submit" class="gate-submit">
+      <span data-lang-en>Access research →</span>
+      <span data-lang-pt>Acessar pesquisa →</span>
+    </button>
+  </form>
+  <a href="../../cases/lending-nuvemshop/#insights" class="gate-back">
+    <span data-lang-en>← Back to case study</span>
+    <span data-lang-pt>← Voltar ao case</span>
+  </a>
+</div>
 
-        function toggleLanguage() {
-            const html = document.documentElement;
-            const currentLang = html.lang;
-            html.lang = currentLang === 'en' ? 'pt-BR' : 'en';
-            localStorage.setItem('pesquisa_lang', html.lang);
-        }
+<script>
+  const HASH = 'e98724ea95041623e9652e604a6ba7cb0a7bb218820a4b16854c165c1b0784ce';
 
-        function restoreLanguage() {
-            const savedLang = localStorage.getItem('pesquisa_lang');
-            if (savedLang) {
-                document.documentElement.lang = savedLang;
-            }
-        }
+  if (sessionStorage.getItem('pesquisa_auth') === 'ok') {
+    window.location.replace('./app.html');
+  }
 
-        async function hashPassword(password) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        }
+  function setLanguage(lang) {
+    localStorage.setItem('portfolio-lang', lang);
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-toggle button').forEach(function(btn) {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+  }
 
-        async function handleLogin(event) {
-            event.preventDefault();
-            const passwordInput = document.getElementById('passwordInput');
-            const errorMessage = document.getElementById('errorMessage');
-            const submitBtn = event.target.querySelector('button[type="submit"]');
+  function toggleTheme() {
+    var current = document.documentElement.getAttribute('data-theme') || 'light';
+    var next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('portfolio-theme', next);
+  }
 
-            errorMessage.classList.remove('show');
-            submitBtn.disabled = true;
+  document.addEventListener('DOMContentLoaded', function() {
+    var lang = localStorage.getItem('portfolio-lang') || 'en';
+    setLanguage(lang);
+  });
 
-            try {
-                const inputHash = await hashPassword(passwordInput.value);
-                if (inputHash === PASSWORD_HASH) {
-                    sessionStorage.setItem('pesquisa_auth', 'ok');
-                    window.location.href = './app.html';
-                } else {
-                    errorMessage.textContent = document.documentElement.lang === 'pt-BR'
-                        ? 'Senha incorreta'
-                        : 'Incorrect password';
-                    errorMessage.classList.add('show');
-                    passwordInput.value = '';
-                    passwordInput.focus();
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                errorMessage.textContent = document.documentElement.lang === 'pt-BR'
-                    ? 'Erro ao processar. Tente novamente.'
-                    : 'Error processing. Try again.';
-                errorMessage.classList.add('show');
-            } finally {
-                submitBtn.disabled = false;
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', restoreLanguage);
-
-        if (sessionStorage.getItem('pesquisa_auth') === 'ok') {
-            window.location.href = './app.html';
-        }
-    </script>
+  async function handleLogin(event) {
+    event.preventDefault();
+    var pw = document.getElementById('gate-pw').value;
+    var errEl = document.getElementById('gate-error');
+    var btn = event.target.querySelector('.gate-submit');
+    btn.disabled = true;
+    errEl.classList.remove('show');
+    try {
+      var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
+      var hash = Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+      if (hash === HASH) {
+        sessionStorage.setItem('pesquisa_auth', 'ok');
+        window.location.replace('./app.html');
+      } else {
+        errEl.textContent = document.documentElement.lang === 'pt'
+          ? 'Senha incorreta. Tente novamente.'
+          : 'Incorrect password. Try again.';
+        errEl.classList.add('show');
+        document.getElementById('gate-pw').value = '';
+        document.getElementById('gate-pw').focus();
+      }
+    } catch(e) {
+      errEl.textContent = 'Error. Try again.';
+      errEl.classList.add('show');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+</script>
 </body>
 </html>
