@@ -256,6 +256,7 @@ html[lang="pt"] [data-lang-en] { display: none }
       var hash = Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
       if (hash === HASH) {
         sessionStorage.setItem('pesquisa_auth', 'ok');
+        sessionStorage.setItem('pres-auth-token', 'local-dev-token');
         localStorage.setItem('pesquisa_auth_v2', JSON.stringify({ ts: Date.now() }));
         window.location.replace('./app.html');
       } else {
