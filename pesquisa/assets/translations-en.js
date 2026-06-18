@@ -859,9 +859,21 @@
       var t = node.nodeValue;
       if (!t) return;
       var trimmed = t.trim();
-      if (trimmed && T[trimmed] !== undefined) {
+      if (!trimmed) return;
+      // Exact match
+      if (T[trimmed] !== undefined) {
         node.nodeValue = node.nodeValue.replace(trimmed, T[trimmed]);
+        return;
       }
+      // Substring match for JSX-fragmented nodes (only keys longer than 8 chars)
+      var keys = Object.keys(T);
+      for (var i = 0; i < keys.length; i++) {
+        var k = keys[i];
+        if (k.length > 8 && t.indexOf(k) !== -1) {
+          t = t.split(k).join(T[k]);
+        }
+      }
+      if (t !== node.nodeValue) node.nodeValue = t;
     }
   }
 

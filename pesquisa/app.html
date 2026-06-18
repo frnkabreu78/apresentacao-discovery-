@@ -211,11 +211,13 @@ body { padding-top: 45px; }
 })();
 </script>
 
+<!-- translations handled entirely by ./assets/translations-en.js -->
 <script>
 (function(){
-  // Exact text-node PT->EN dictionary (keys = trimmed text node strings)
-  var dict = {
-    // Slide titles
+  // Duplicate translation block — disabled. All translations live in ./assets/translations-en.js.
+  // Exiting early prevents a second MutationObserver and the _applyTranslations override.
+  if (true) return;
+  var _placeholder = {
     "Capa": "Cover",
     "Além da superfície: ciclo financeiro real": "Beyond the surface: real financial cycle",
     "O que queríamos responder": "What we wanted to answer",
