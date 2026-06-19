@@ -825,6 +825,99 @@
     // ── IMAGE ALT TEXT ────────────────────────────────────────────────────
     "Infográfico: perfil de lojista Andressa Sanches (Clickdamoda) — operação, estoque e comportamento financeiro.":
       "Infographic: merchant profile Andressa Sanches (Clickdamoda) — operation, inventory and financial behaviour.",
+
+    // ── EVIDENCE FILTER THEMES ────────────────────────────────────────────
+    "Contexto da loja e operação": "Store operation and context",
+    "Tráfego pago, mídia e aquisição": "Paid traffic, media and acquisition",
+    "Fornecedor, estoque e logística": "Supplier, inventory and logistics",
+    "Crédito, empréstimo, CET e bancos": "Credit, loans, APR and banks",
+    "Plataforma, Nuvemshop e integrações": "Platform, Nuvemshop and integrations",
+    "Margens, preços e PIX": "Margins, pricing and PIX",
+    "Retenção, cobrança e controle de caixa": "Retention, collection and cash control",
+    "Modelo de negócio (dropshipping, sob demanda, artesanal)":
+      "Business model (dropshipping, on-demand, artisan)",
+    "Prazo, carência e parcelamento": "Term, grace period and instalments",
+
+    // ── ANALYSIS FRAMEWORK LABELS (JTBD / Fogg / SPIN) ───────────────────
+    "Força": "Force",
+    "Pull (atração)": "Pull (attraction)",
+    "Habit (inércia)": "Habit (inertia)",
+    "Evidência": "Evidence",
+    "Evidência (citação literal)": "Evidence (direct quote)",
+    "Job principal do usuário": "User's primary job",
+    "Implicação de produto / UI": "Product / UI implication",
+    "Atrito / objeção (barreira)": "Friction / objection (barrier)",
+    "Atrito de detalhamento (objetos/interações):": "Detail friction (objects/interactions):",
+    "Sucesso na emissão de NF:": "Invoice issuance success:",
+    "Métrica de sucesso": "Success metric",
+    "pricing dinâmico": "dynamic pricing",
+    "conciliação de chargeback": "chargeback reconciliation",
+    "Interações de sistema:": "System interactions:",
+    "Gestão de dados e automação:": "Data management and automation:",
+    "Autofinanciamento (capital próprio estruturado)":
+      "Self-financing (structured own capital)",
+    "Crédito sazonal / bullet": "Seasonal / bullet credit",
+    "Crédito para expansão física": "Credit for physical expansion",
+    "Just-in-time (produção)": "Just-in-time (production)",
+    "Divisão automática do valor da venda entre lojista, taxas e parcelas.":
+      "Automatic split of the sale value between merchant, fees and instalments.",
+
+    // ── MERCHANT PROFILE TITLE FORMATS ───────────────────────────────────
+    "Douglas Eusébio · Loja Dougie": "Douglas Eusébio · Loja Dougie",
+    "Douglas Eusébio — Loja Dougie": "Douglas Eusébio — Loja Dougie",
+    "Mayke Gomes · Acessórios masculinos": "Mayke Gomes · Men's accessories",
+    "Mayke Gomes — Acessórios masculinos": "Mayke Gomes — Men's accessories",
+    "Gaby Trus · Acessórios artesanais": "Gaby Trus · Handmade accessories",
+    "Gaby Trus — Acessórios artesanais": "Gaby Trus — Handmade accessories",
+    "Viviane, proprietária da loja Color Zeds":
+      "Viviane, Color Zeds store owner",
+
+    // ── CREDIT / PROFILE ATTRIBUTES ──────────────────────────────────────
+    "Consolidação de marca": "Brand consolidation",
+    "Fundo de tráfego": "Traffic fund",
+    "GO: Crédito Expansão": "GO: Expansion credit",
+    "Carência mínima de 45 dias": "Minimum 45-day grace period",
+    "Bitributação e escala física": "Double taxation and physical scale",
+    "Sem pressão de caixa — autofinanciado": "No cash pressure — self-financed",
+    "Zero (aversão total)": "Zero (total aversion)",
+    "estoque 100% pago à vista": "inventory 100% paid upfront",
+    "— Comentários": "— Comments",
+    "Crédito para infraestrutura": "Credit for infrastructure",
+    "crédito ideal": "ideal credit",
+    "crédito bullet sazon": "seasonal bullet credit",
+    "crédito posicionado como": "credit positioned as",
+
+    // ── GLOSSARY / BODY NOTES ─────────────────────────────────────────────
+    "Quando a loja tem o modelo, mas faltam tamanhos ou cores específicos.":
+      "When the store has the style but is missing specific sizes or colours.",
+    "Não conseguia ver no extrato detalhado… tive que abrir chamado":
+      "Couldn't see it in the detailed statement… had to open a ticket",
+    "O site ele passa profissionalismo, ele dá uma autoridade para sua marca":
+      "The site conveys professionalism, it gives authority to your brand",
+    "O meu custo é muito barato… Acho que um dia eu já pago uma encomenda de um mês":
+      "My cost is very low… I think one day's earnings already covers a month's order",
+    "Pessoas querem experiência de compra… boxzinho bonitinho":
+      "People want a shopping experience… a cute little box",
+    "\"Eu já vendi a peça e ainda estou lá pagando o fornecedor\".":
+      "\"I've already sold the piece and I'm still there paying the supplier\".",
+    "A lojista viu a publicidade de crédito, mas não engajou. Possui dinheiro aplicado rendendo e considera qualquer juro de empréstimo como \"despesa desnecessária\".":
+      "The merchant saw the credit advertising but did not engage. She has invested savings and considers any loan interest a \"pointless expense\".",
+
+    // ── DIRECT QUOTES (new / unreferenced) ───────────────────────────────
+    "eu poderia comprar um lote menor pra testar principalmente por conta das máquinas, se eu tivesse esse... Seria um fluxo de caixa mais rápido,":
+      "I could buy a smaller batch to test, mainly because of the machines, if I had that... It would be a faster cash cycle,",
+    "Ou ele já vai como saldo direto lá para o Nuvem Pago. ao invés de eu precisar adicionar o saldo,":
+      "Or it already goes directly as balance to Nuvem Pago, instead of me needing to top up the balance,",
+    "Segundo a Nuvemshop, são os custos do banco lá, nós levamos um prejuízo de uns R$ 200,00, Se eu não tivesse agido assim com ela firme,":
+      "According to Nuvemshop, those are the bank's costs — we took a R$200 loss. If I hadn't stood my ground with her,",
+    "eu estou sempre buscando estar à frente do mercado e buscando tecnologias novas e formas de agilidade, A gente conseguir ter melhores resultados com menor tempo de produção.":
+      "I'm always looking to stay ahead of the market, seeking new technologies and ways to be more agile — achieving better results with less production time.",
+    "\"A operação é com capital próprio e compra à vista: eu fecho o desconto no fornecedor e não pago juro de empréstimo que não fecha a conta — quando preciso, o banco já me dá linha mais barata.\"":
+      "\"The operation runs on own capital and upfront purchases: I lock in the supplier discount and don't pay loan interest that doesn't add up — when I need it, the bank already gives me a cheaper line.\"",
+    "\"É dropshipping: não tenho camisas paradas em estoque. Vendeu, entrou o dinheiro, eu pago o fornecedor — o giro acompanha o fluxo, sem precisar de empréstimo para reposição.\"":
+      "\"It's dropshipping: I have no shirts sitting in stock. Once it sells and the money comes in, I pay the supplier — the turnover follows the flow, no loan needed for restocking.\"",
+    "\"Aqui é sob demanda: fechei a venda, compro a matéria-prima daquele pedido e produzo. O que entra no dia é o que manda no giro — sem estoque parado e sem pegar empréstimo para insumo.\"":
+      "\"Here it's on-demand: I close the sale, buy the raw material for that order and produce it. What comes in that day drives the cycle — no dead stock and no loan for inputs.\"",
   };
 
   /* ──────────────────────────────────────────────────────────
@@ -849,6 +942,11 @@
     "Áudio do slide": "Slide audio",
     "Infográfico: perfil de lojista Andressa Sanches (Clickdamoda) — operação, estoque e comportamento financeiro.":
       "Infographic: merchant profile Andressa Sanches (Clickdamoda) — operation, inventory and financial behaviour.",
+    "Buscar evidências": "Search evidence",
+    "Filtrar por temas principais": "Filter by main themes",
+    "Todos os temas": "All themes",
+    "Ver temas e evidências das entrevistas": "View interview themes and evidence",
+    "Temas e evidências das entrevistas": "Interview themes and evidence",
   };
 
   /* ──────────────────────────────────────────────────────────
