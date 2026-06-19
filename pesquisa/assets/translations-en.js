@@ -933,6 +933,16 @@
     });
   });
 
+  var observerStarted = false;
+
+  function ensureObserver() {
+    if (observerStarted) return;
+    var root = document.getElementById('root');
+    if (!root) { setTimeout(ensureObserver, 100); return; }
+    observer.observe(root, { childList: true, subtree: true, characterData: true });
+    observerStarted = true;
+  }
+
   /* Wait for React to mount .pres-root, then apply translations */
   function waitAndApply() {
     if (localStorage.getItem('portfolio-lang') !== 'en') return;
@@ -941,7 +951,7 @@
     // Apply immediately on whatever is rendered
     applyAll();
     // Watch for future React updates
-    observer.observe(root, { childList: true, subtree: true, characterData: true });
+    ensureObserver();
     // Also re-apply after short delays to catch lazy-rendered slides
     setTimeout(applyAll, 500);
     setTimeout(applyAll, 1500);
@@ -952,6 +962,8 @@
   // _pfTranslationsActive is set to true only inside applyAll(), not here at load time.
   // Setting it here caused an infinite reload loop when portfolio-lang was 'pt'.
   window._applyTranslations = applyAll;
+  // Allows pfSetLang('en') to start the observer even when page was loaded in PT
+  window._ensureTranslationObserver = ensureObserver;
 
   document.addEventListener('DOMContentLoaded', waitAndApply);
 

@@ -195,6 +195,7 @@ body { padding-top: 45px; }
     window._pfLang = l;
     if (l === 'en') {
       if (window._applyTranslations) window._applyTranslations();
+      if (window._ensureTranslationObserver) window._ensureTranslationObserver();
     } else if (window._pfTranslationsActive) {
       // Reverting to PT after EN was applied: reload to restore original DOM cleanly
       try {
