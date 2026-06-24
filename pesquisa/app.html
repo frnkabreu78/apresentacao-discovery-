@@ -212,6 +212,69 @@ body { padding-top: 45px; }
 })();
 </script>
 
+<!-- Modal close button injector -->
+<script>
+(function(){
+  var CLOSE_BTN_ID = 'pf-modal-close-btn';
+
+  function injectCloseButton(toolbar) {
+    if (toolbar.querySelector('#' + CLOSE_BTN_ID)) return;
+    var actionsEl = toolbar.querySelector('.pres-modal-toolbar-actions');
+    if (!actionsEl) return;
+
+    var btn = document.createElement('button');
+    btn.id = CLOSE_BTN_ID;
+    btn.setAttribute('aria-label', 'Fechar');
+    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    btn.style.cssText = [
+      'display:inline-flex',
+      'align-items:center',
+      'justify-content:center',
+      'width:36px',
+      'height:36px',
+      'border:1px solid rgba(15,23,42,0.15)',
+      'border-radius:8px',
+      'background:#fff',
+      'color:#475569',
+      'cursor:pointer',
+      'flex-shrink:0',
+      'transition:background .15s,color .15s,border-color .15s',
+    ].join(';');
+    btn.onmouseenter = function(){ this.style.background='#f1f5f9'; this.style.color='#0f172a'; };
+    btn.onmouseleave = function(){ this.style.background='#fff'; this.style.color='#475569'; };
+    btn.onclick = function(){
+      // Try Escape key first (React modal handler)
+      var evt = new KeyboardEvent('keydown', { key:'Escape', keyCode:27, bubbles:true, cancelable:true });
+      document.dispatchEvent(evt);
+      // Fallback: remove backdrop from DOM after short delay if still present
+      setTimeout(function(){
+        var backdrop = document.querySelector('.pres-modal-backdrop');
+        if (backdrop) backdrop.remove();
+      }, 80);
+    };
+    actionsEl.appendChild(btn);
+  }
+
+  var observer = new MutationObserver(function(mutations){
+    mutations.forEach(function(m){
+      m.addedNodes.forEach(function(node){
+        if (node.nodeType !== 1) return;
+        // Check if the added node is the backdrop or contains it
+        if (node.classList && node.classList.contains('pres-modal-backdrop')) {
+          var toolbar = node.querySelector('.pres-modal-toolbar');
+          if (toolbar) injectCloseButton(toolbar);
+        } else {
+          var toolbar = node.querySelector && node.querySelector('.pres-modal-backdrop .pres-modal-toolbar');
+          if (toolbar) injectCloseButton(toolbar);
+        }
+      });
+    });
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+
 <!-- translations handled entirely by ./assets/translations-en.js -->
 <script>
 (function(){
