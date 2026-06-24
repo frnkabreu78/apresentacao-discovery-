@@ -255,9 +255,9 @@ html[lang="pt"] [data-lang-en] { display: none }
       var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
       var hash = Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
       if (hash === HASH) {
-        sessionStorage.setItem('pesquisa_auth', 'ok');
+        sessionStorage.setItem('pesquisa_auth', HASH);
         sessionStorage.setItem('pres-auth-token', 'local-dev-token');
-        localStorage.setItem('pesquisa_auth_v2', JSON.stringify({ ts: Date.now() }));
+        localStorage.setItem('pesquisa_auth_v2', JSON.stringify({ ts: Date.now(), token: HASH }));
         window.location.replace('./app.html');
       } else {
         errEl.textContent = document.documentElement.lang === 'pt'

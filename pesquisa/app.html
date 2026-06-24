@@ -5,11 +5,12 @@
     <script>
     // Auth guard — runs before any asset loads
     (function(){
+      var _PHASH='e98724ea95041623e9652e604a6ba7cb0a7bb218820a4b16854c165c1b0784ce';
       function isPesquisaAuthed(){
-        if(sessionStorage.getItem('pesquisa_auth')==='ok') return true;
+        if(sessionStorage.getItem('pesquisa_auth')===_PHASH) return true;
         try{
           var d=JSON.parse(localStorage.getItem('pesquisa_auth_v2')||'null');
-          return d&&(Date.now()-d.ts<30*24*60*60*1000);
+          return d&&d.token===_PHASH&&(Date.now()-d.ts<30*24*60*60*1000);
         }catch(e){return false;}
       }
       if(!isPesquisaAuthed()){
