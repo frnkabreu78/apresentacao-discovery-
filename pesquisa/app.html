@@ -165,6 +165,18 @@
   color: #fff;
 }
 body { padding-top: 45px; }
+
+/* Prevent #pf-nav (45px fixed) from creating extra scroll:
+   pres-root starts at y=45 due to body padding, so subtract that
+   from min-height to keep total page height = 100vh exactly. */
+.pres-root {
+  min-height: calc(100vh - 45px) !important;
+  min-height: calc(100dvh - 45px) !important;
+}
+/* For scrollable slide variants (exec), ensure top content isn't clipped */
+.pres-main--exec {
+  scroll-padding-top: 45px;
+}
 </style>
 </head>
   <body>
